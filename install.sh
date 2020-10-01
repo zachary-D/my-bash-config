@@ -22,5 +22,5 @@ function addCommandtoCronIfMissing() {
 }
 
 cronUpdateCommand="cd $(pwd); git pull >> /dev/null"
-addCommandtoCronIfMissing "0 2 * * * $cronUpdateCommand"
+addCommandtoCronIfMissing "0 12 * * * $cronUpdateCommand"
 addCommandtoCronIfMissing "@reboot $cronUpdateCommand"
