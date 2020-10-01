@@ -1,26 +1,20 @@
 #!/bin/bash
-config_path="$(pwd)/bash-config.sh"
 
-if [[ "$( grep -o $config_path ~/.bashrc )" == "" ]]; then
-	printf "\nsource $config_path\n" >> ~/.bashrc
-else
-	echo "Config file already sourced"
-fi
+#This string is appended as arguments to the scripts in this package in order to determine which lines were added to .bashrc or cron by the installer
+INSTALLER_SCRIPT_IDENTIFIER="this-line-was-added-by-the-bash-config-manager-auto-installer"
 
-# $1 - string to check for; $2 - command to add
-function addCommandtoCronIfMissing() {
-	commandToAdd="$2"
-	if [[ "$2" == "" ]]; then
-		commandToAdd="$1"
-	fi
+scriptPath="$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )/"
+config_path="$scriptPath"bash-config.sh
 
-	if [[ $( crontab -l | grep -F -o "$1") == "" ]]; then
-		( crontab -l; echo "$commandToAdd" ) | crontab -
-	else
-		echo "$1 already found"
-	fi
-}
+bashrc="$(grep -v $INSTALLER_SCRIPT_IDENTIFIER ~/.bashrc)"
+echo "$bashrc" > ~/.bashrc
+printf "\nsource $config_path $INSTALLER_SCRIPT_IDENTIFIER\n" >> ~/.bashrc
 
-cronUpdateCommand="cd $(pwd); git pull >> /dev/null"
-addCommandtoCronIfMissing "0 12 * * * $cronUpdateCommand"
-addCommandtoCronIfMissing "@reboot $cronUpdateCommand"
+
+
+cronUpdateCommand="$scriptPath""updater.sh $INSTALLER_SCRIPT_IDENTIFIER > /dev/null"
+
+cronJobs="0 12 * * * $cronUpdateCommand
+@reboot $cronUpdateCommand"
+
+( crontab -l | grep -v $INSTALLER_SCRIPT_IDENTIFIER ; echo "$cronJobs" ) | crontab -
