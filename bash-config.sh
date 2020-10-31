@@ -6,7 +6,8 @@ alias gstat="git status"
 alias gdiff="git diff"
 
 # redirect mariadb to localost over the network so it can connect to the server running on the windows-side (WSL)
-alias mariadb="mariadb -h 127.0.0.1"
+# this expects that $WSL_HOST be set to the host IP
+alias mariadb="mariadb -h $WSL_HOST"
 
 # functional aliases
 alias mysql=mariadb
