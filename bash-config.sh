@@ -3,7 +3,7 @@
 # git shortcuts
 alias ggraph="git log --stat --graph --branches --remotes"
 alias gstat="git status"
-alias gdiff="git diff"
+alias gdiff="git diff --ignore-space-change"
 
 # redirect mariadb to localost over the network so it can connect to the server running on the windows-side (WSL)
 # this expects that $WSL_HOST be set to the host IP
