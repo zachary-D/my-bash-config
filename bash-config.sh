@@ -18,6 +18,9 @@ alias code=code-insiders
 alias sl="sl -e"
 alias LS="LS -e"
 
+# rsync default args
+alias rsync-d="rsync -avz --progress --append-verify"
+
 # funny meme aliases
 alias yeet="rm"
 alias skrrt="exit"
