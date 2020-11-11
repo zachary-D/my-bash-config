@@ -19,7 +19,7 @@ alias sl="sl -e"
 alias LS="LS -e"
 
 # rsync default args
-alias rsync-d="rsync -avz --progress --append-verify"
+alias rsync-d="rsync -avz --progress --append-verify --protect-args"
 
 # funny meme aliases
 alias yeet="rm"
