@@ -56,8 +56,6 @@ function exp() {
 	explorer.exe "$dir"
 }
 
-PATH="$PATH:./node_modules/.bin/"
-
 # function myClone()
 # {
 # 	git clone git@github.com:zachary-D/"$1"
