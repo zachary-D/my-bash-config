@@ -57,6 +57,24 @@ function exp() {
 	explorer.exe "$dir"
 }
 
+# Startup banner
+function dispBanner() {
+	welcome="Welcome back Zack,"
+	banner="It's Terminal Time"
+
+	if [[ $(dpkg -l | grep -E '(figlet)|(lolcat)' | wc -l) == 2 ]]; then
+		echo "$welcome" | gay
+		$(figlet -v >> /dev/null) && figlet -f slant -tc "$banner" | gay
+	else
+		echo "$welcome"
+		echo "$banner"
+	fi
+
+	echo $(date '+It is %H:%M on %a %b %d')
+}
+
+dispBanner
+
 # function myClone()
 # {
 # 	git clone git@github.com:zachary-D/"$1"
