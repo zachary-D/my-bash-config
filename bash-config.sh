@@ -57,6 +57,20 @@ function exp() {
 	explorer.exe "$dir"
 }
 
+# run 'npm test', and merge if it succeeds
+function safeMerge() {
+	branch=$(git rev-parse --abbrev-ref HEAD)
+	git checkout "$1"
+	if npm test; then
+		git checkout "$branch"
+		git merge "$1"
+	else
+		echo "Merge aborted"
+	fi
+}
+
+alias safemerge=safeMerge
+
 # Startup banner
 function dispBanner() {
 	welcome="Welcome back Zack,"
