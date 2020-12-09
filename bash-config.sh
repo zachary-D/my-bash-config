@@ -7,8 +7,10 @@ alias gdiff="git diff --ignore-space-change"
 alias gdiffc="gdiff --cached"
 
 # redirect mariadb to localost over the network so it can connect to the server running on the windows-side (WSL)
-# this expects that $WSL_HOST be set to the host IP
-alias mariadb="mariadb -h $WSL_HOST"
+# set WSL_HOST in the machine-specific bash config before this file is loaded to enable
+if [[ "$WSL_HOST" != "" ]]; then
+	alias mariadb="mariadb -h $WSL_HOST"
+fi
 
 # functional aliases
 alias mysql=mariadb
