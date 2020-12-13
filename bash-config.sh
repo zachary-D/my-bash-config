@@ -10,6 +10,7 @@ alias gdiffc="gdiff --cached"
 # set WSL_HOST in the machine-specific bash config before this file is loaded to enable
 if [[ "$WSL_HOST" != "" ]]; then
 	alias mariadb="mariadb -h $WSL_HOST"
+	alias mysqldump="mysqldump -h $WSL_HOST"
 fi
 
 # functional aliases
