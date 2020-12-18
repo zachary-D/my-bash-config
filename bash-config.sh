@@ -74,11 +74,17 @@ function safeMerge() {
 
 alias safemerge=safeMerge
 
+function mergeInto() {
+	branch=$(git rev-parse --abbrev-ref HEAD)
+	git checkout "$1" && git merge "$branch"
+}
+
+alias mergeinto=mergeInto
+
 # run 'npm test' in the current branch, and merge it into another if it succeeds
 function safeMergeInto() {
-	branch=$(git rev-parse --abbrev-ref HEAD)
 	if npm test; then
-		git checkout "$1" && git merge "$branch"
+		mergeInto "$1"
 	fi
 }
 
