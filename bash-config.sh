@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# set tab size=4 (interactive terminals only)
+# https://askubuntu.com/a/251033, https://stackoverflow.com/a/25391867
+[[ $- == *i* ]] && tabs -4
+
 # git shortcuts
 alias ggraph="git log --stat --graph --branches --remotes"
 alias gstat="git status"
