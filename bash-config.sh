@@ -57,3 +57,5 @@ function dispBanner() {
 }
 
 dispBanner
+
+$scriptDir/backgroundUpdate.sh &

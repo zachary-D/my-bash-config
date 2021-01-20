@@ -4,6 +4,7 @@
 INSTALLER_SCRIPT_IDENTIFIER="this-line-was-added-by-the-bash-config-manager-auto-installer"
 
 scriptPath="$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )/"
+
 config_path="$scriptPath"bash-config.sh
 
 bashrc="$(grep -v $INSTALLER_SCRIPT_IDENTIFIER ~/.bashrc)"
