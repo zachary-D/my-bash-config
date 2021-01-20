@@ -58,4 +58,4 @@ function dispBanner() {
 
 dispBanner
 
-$scriptDir/backgroundUpdate.sh &
+[[ $- == *i* ]] && $scriptDir/backgroundUpdate.sh &
