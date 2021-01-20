@@ -5,7 +5,6 @@
 [[ $- == *i* ]] && tabs -4
 
 scriptDir="$( cd "$(dirname "${BASH_SOURCE}")" >/dev/null 2>&1 ; pwd -P )/"
-echo $scriptDir
 PATH="$PATH:$scriptDir""scripts/"
 
 # git shortcuts
