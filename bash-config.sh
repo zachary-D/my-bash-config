@@ -56,6 +56,6 @@ function dispBanner() {
 	echo $(date '+It is %H:%M on %a %b %d')
 }
 
-dispBanner
+[[ $- == *i* ]] && dispBanner
 
 [[ $- == *i* ]] && $scriptDir/backgroundUpdate.sh &
