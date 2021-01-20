@@ -1,0 +1,7 @@
+#!/bin/bash
+# Merges one git branch into another
+
+set -e
+
+branch=$(git rev-parse --abbrev-ref HEAD)
+git checkout "$1" && git merge "$branch"

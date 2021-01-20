@@ -4,6 +4,10 @@
 # https://askubuntu.com/a/251033, https://stackoverflow.com/a/25391867
 [[ $- == *i* ]] && tabs -4
 
+scriptDir="$( cd "$(dirname "${BASH_SOURCE}")" >/dev/null 2>&1 ; pwd -P )/"
+echo $scriptDir
+PATH="$PATH:$scriptDir""scripts/"
+
 # git shortcuts
 alias ggraph="git log --stat --graph --branches --remotes"
 alias gstat="git status"
@@ -26,9 +30,6 @@ alias code=code-insiders
 alias sl="sl -e"
 alias LS="LS -e"
 
-# rsync default args
-alias rsync-d="rsync -avz --progress --append-verify --protect-args"
-
 # funny meme aliases
 alias yeet="rm"
 alias skrrt="exit"
@@ -39,60 +40,6 @@ alias gay=lolcat
 
 # jump to my user directory on the windows-side
 alias win="cd /mnt/c/Users/zac*"
-
-# open this directory in windows explorer
-function exp() {
-	if [[ "$1" == "" ]]; then
-			dir="."
-	else
-			dir="$1"
-	fi
-
-	if [[ "$dir" != "." ]] && [[ "$dir" != ".." ]] ; then
-			#If $dir is not an absolute path, append $(pwd)
-			if [[ ${dir:0:1} != '/' ]]; then
-					dir="$(pwd)\\$dir"
-			fi
-
-			#Replace / with \ (linux slashes with windows slashes)
-			dir=$(echo $dir | sed s/'\/'/'\\'/g)
-
-			#Prepend the WSL network directory
-			dir="\\\\wsl\$\\Ubuntu$dir"
-	fi
-
-	explorer.exe "$dir"
-}
-
-# run 'npm test', and merge if it succeeds
-function safeMerge() {
-	branch=$(git rev-parse --abbrev-ref HEAD)
-	git checkout "$1"
-	if npm test; then
-		git checkout "$branch"
-		git merge "$1"
-	else
-		echo "Merge aborted"
-	fi
-}
-
-alias safemerge=safeMerge
-
-function mergeInto() {
-	branch=$(git rev-parse --abbrev-ref HEAD)
-	git checkout "$1" && git merge "$branch"
-}
-
-alias mergeinto=mergeInto
-
-# run 'npm test' in the current branch, and merge it into another if it succeeds
-function safeMergeInto() {
-	if npm test; then
-		mergeInto "$1"
-	fi
-}
-
-alias safemergeinto=safeMergeInto
 
 # Startup banner
 function dispBanner() {
@@ -111,10 +58,3 @@ function dispBanner() {
 }
 
 dispBanner
-
-# function myClone()
-# {
-# 	git clone git@github.com:zachary-D/"$1"
-# }
-
-# alias myclone=myClone

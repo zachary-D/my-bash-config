@@ -1,0 +1,13 @@
+#!/bin/bash
+# run 'npm test', and merge if it succeeds
+
+set -e
+
+branch=$(git rev-parse --abbrev-ref HEAD)
+git checkout "$1"
+if npm test; then
+	git checkout "$branch"
+	git merge "$1"
+else
+	echo "Merge aborted"
+fi

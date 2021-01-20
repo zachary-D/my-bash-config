@@ -1,0 +1,8 @@
+#!/bin/bash
+# run 'npm test' in the current branch, and merge it into another if it succeeds
+
+set -e
+
+if npm test; then
+	mergeInto "$1"
+fi

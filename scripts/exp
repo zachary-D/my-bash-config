@@ -1,0 +1,25 @@
+#!/bin/bash
+# opens the current directory in windows explorer
+
+set -e
+
+if [[ "$1" == "" ]]; then
+		dir="."
+else
+		dir="$1"
+fi
+
+if [[ "$dir" != "." ]] && [[ "$dir" != ".." ]] ; then
+		#If $dir is not an absolute path, append $(pwd)
+		if [[ ${dir:0:1} != '/' ]]; then
+				dir="$(pwd)\\$dir"
+		fi
+
+		#Replace / with \ (linux slashes with windows slashes)
+		dir=$(echo $dir | sed s/'\/'/'\\'/g)
+
+		#Prepend the WSL network directory
+		dir="\\\\wsl\$\\Ubuntu$dir"
+fi
+
+explorer.exe "$dir"
