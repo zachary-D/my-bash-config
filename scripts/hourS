@@ -1,0 +1,5 @@
+#!/bin/bash
+
+#Converts $1 hours into seconds
+
+echo $( minutes $(( 60 * $1 )) )
