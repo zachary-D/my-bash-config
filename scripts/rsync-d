@@ -1,3 +1,4 @@
 #!/bin/bash
 # This script simply acts as a set of default args for rsync
-rsync -avz --progress --append-verify --protect-args $@
+
+rsync -avz --progress --append-verify --protect-args "$@"
