@@ -22,4 +22,5 @@ if [[ "$dir" != "." ]] && [[ "$dir" != ".." ]] ; then
 		dir="\\\\wsl\$\\Ubuntu$dir"
 fi
 
-explorer.exe "$dir"
+explorer.exe "$dir" &
+
