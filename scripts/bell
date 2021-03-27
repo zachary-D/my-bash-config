@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# Makes a beep play
+powershell.exe '[console]::beep(261.6,700)'
