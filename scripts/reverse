@@ -1,0 +1,26 @@
+#!/bin/bash
+
+#Interprets "$@" as an array, and reverses it
+
+#To store the results in an array again for later use do arr=($(reverse input))
+
+#Heavily based off
+#https://unix.stackexchange.com/questions/412868/bash-reverse-an-array
+
+array=($@)
+
+min=0
+max=$(( ${#array[@]} -1 ))
+
+while [[ min -lt max ]]
+do
+    # Swap current first and last elements
+    x="${array[$min]}"
+    array[$min]="${array[$max]}"
+    array[$max]="$x"
+
+    # Move closer
+    (( min++, max-- ))
+done
+
+echo "${array[@]}"
