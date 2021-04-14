@@ -1,9 +1,38 @@
 #!/bin/bash
 
-#Converts $1 seconds into hh:mm:ss
 
-hours=$(( "$1" / (60*60) ))
-minutes=$(( ("$1" / 60) - $hours * 60 ))
-seconds=$(( "$1" % 60 ))
+#Converts $1 seconds into hh:mm:ss if $1 does not contain a colon, otherwise interpret it as a timestamp and convert it to seconds
 
-echo "$hours:$minutes:$seconds"
+if [[ "$1" == "" ]]; then
+	echo "Please supply an argument"
+	exit 1
+fi
+
+if [[ "$1" == *":"* ]]; then
+	UNIT_FACTOR=(1 60 3600)	#Constants to multilpy each unit by to get seconds (sec, min, hr)
+
+	IFS=':'
+	read -ra arr <<< "$1"	#Split the timecode into terms
+	unset IFS #resets IFS to default
+
+	arr=($(reverse ${arr[@]} ))	#Reverse it so it's seconds-first
+
+	seconds=0
+	unit=0
+
+	for i in "${arr[@]}"; do
+		seconds=$(( $i * ${UNIT_FACTOR[$unit]} + seconds ))
+
+		unit=$(( $unit + 1 ))
+	done
+
+	echo $seconds
+else
+	hours=$(( "$1" / (60*60) ))
+	minutes=$(( ("$1" / 60) - $hours * 60 ))
+	seconds=$(( "$1" % 60 ))
+	
+	echo "$hours:$minutes:$seconds"
+
+fi
+
