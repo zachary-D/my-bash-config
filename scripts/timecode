@@ -1,5 +1,6 @@
 #!/bin/bash
 
+set -e
 
 #Converts $1 seconds into hh:mm:ss if $1 does not contain a colon, otherwise interpret it as a timestamp and convert it to seconds
 
@@ -8,11 +9,21 @@ if [[ "$1" == "" ]]; then
 	exit 1
 fi
 
-if [[ "$1" == *":"* ]]; then
+in="$1"
+
+#When the input is negative, negChar is set, which will then be prefixed to the output
+negChar=''
+if [[ "${in:0:1}" == "-" ]]; then
+	isNegative=true
+	in="${in:1}"
+	negChar='-'
+fi
+
+if [[ "$in" == *":"* ]]; then
 	UNIT_FACTOR=(1 60 3600)	#Constants to multilpy each unit by to get seconds (sec, min, hr)
 
 	IFS=':'
-	read -ra arr <<< "$1"	#Split the timecode into terms
+	read -ra arr <<< "$in"	#Split the timecode into terms
 	unset IFS #resets IFS to default
 
 	arr=($(reverse ${arr[@]} ))	#Reverse it so it's seconds-first
@@ -26,13 +37,13 @@ if [[ "$1" == *":"* ]]; then
 		unit=$(( $unit + 1 ))
 	done
 
-	echo $seconds
+	echo "$negChar$seconds"
 else
-	hours=$(( "$1" / (60*60) ))
-	minutes=$(( ("$1" / 60) - $hours * 60 ))
-	seconds=$(( "$1" % 60 ))
+	hours=$(( "$in" / (60*60) ))
+	minutes=$(( ("$in" / 60) - $hours * 60 ))
+	seconds=$(( "$in" % 60 ))
 	
-	echo "$hours:$minutes:$seconds"
+	echo "$negChar$hours:$minutes:$seconds"
 
 fi
 
