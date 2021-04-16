@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# Shifts n - 1 arguments by $1
+
+set -e
+
+if [[ "$1" == "" ]]; then
+	echo "You must supply a delta"
+	exit 1
+fi
+
+delta="$(timecode $1)"
+shift
+
+while [[ "$1" != "" ]]; do
+	printf "$(timecode $(( $(timecode $1) + $delta )))"
+	shift
+	if [[ "$1" != "" ]]; then
+		printf ' '
+	fi
+done
+
+echo ''

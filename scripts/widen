@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# Takes n + 1 arguments in pairs, subtracting $1 from the first and adding it to the second in each pair
+
+set -e
+
+if [[ "$1" == "" ]]; then
+	echo 'You must supply a delta'
+	exit 1
+fi
+
+delta="$(timecode $1)"
+shift
+
+while [[ "$1" != "" ]]; do
+	first="$(timecode $(( $(timecode $1) - $delta )) )"
+	if [[ "$2" == "" ]]; then
+		echo "$first"
+		echo "missing final pair"
+		exit 2
+	fi
+	second="$(timecode $(( $(timecode $2) + $delta )) )"
+	echo "$first $second"
+	shift; shift
+done
