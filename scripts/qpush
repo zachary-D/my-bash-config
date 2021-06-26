@@ -1,0 +1,19 @@
+#!/bin/bash
+
+#Performs git push in the background, only printing a quiet error message if it fails
+
+args=($@)
+
+function doPush() {
+	git push $args &> /dev/null
+	if [[ $? != 0 ]]; then
+		if [[ "$args" != "" ]]; then
+			argSpc=' '
+		else
+			argSpc=''
+		fi
+		echo "Error: qpush failed with command 'git push$argSpc$args'"
+	fi
+}
+
+doPush &

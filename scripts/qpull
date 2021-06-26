@@ -1,0 +1,19 @@
+#!/bin/bash
+
+#Performs git pull in the background, only printing a quiet error message if it fails
+
+args=($@)
+
+function doPull() {
+	git pull $args &> /dev/null
+	if [[ $? != 0 ]]; then
+		if [[ "$args" != "" ]]; then
+			argSpc=' '
+		else
+			argSpc=''
+		fi
+		echo "Error: qpull failed with command 'git pull$argSpc$args'"
+	fi
+}
+
+doPull &
