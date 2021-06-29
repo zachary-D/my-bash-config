@@ -48,16 +48,18 @@ if [[ "$in" == *":"* ]]; then
 	unit=0
 
 	for i in "${arr[@]}"; do
-		seconds=$(( $i * ${UNIT_FACTOR[$unit]} + seconds ))
+		# 10# forces base-10 evaluation - https://stackoverflow.com/questions/36238961/script-error-value-too-great-for-base-error-token-is-09
+		seconds=$(( 10#$i * ${UNIT_FACTOR[$unit]} + seconds ))
 
 		unit=$(( $unit + 1 ))
 	done
 
 	echo "$negChar$seconds"
 else
-	hours=$(( "$in" / (60*60) ))
-	minutes=$(( ("$in" / 60) - $hours * 60 ))
-	seconds=$(( "$in" % 60 ))
+	# 10# forces base-10 evaluation - https://stackoverflow.com/questions/36238961/script-error-value-too-great-for-base-error-token-is-09
+	hours=$(( "10#$in" / (60*60) ))
+	minutes=$(( ("10#$in" / 60) - $hours * 60 ))
+	seconds=$(( "10#$in" % 60 ))
 
 	pad hours 2
 	pad minutes 2
