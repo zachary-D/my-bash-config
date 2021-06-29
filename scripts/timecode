@@ -4,6 +4,22 @@ set -e
 
 #Converts $1 seconds into hh:mm:ss if $1 does not contain a colon, otherwise interpret it as a timestamp and convert it to seconds
 
+# pads a string to the specified length
+# $1 - the string being padded, THIS METHOD WILL MODFIY THIS VARAIBLE
+# $2 - the length to pad to
+# $3 - pad with (defaults to 0)
+function pad() {
+	padChar=0
+	if [[ "$3" != "" ]]; then
+		padChar="$3"
+	fi
+
+	local -n str=$1
+	while [[ "${#str}" < $2 ]]; do
+		str="$padChar$str"
+	done
+}
+
 if [[ "$1" == "" ]]; then
 	echo "Please supply an argument"
 	exit 1
@@ -42,7 +58,11 @@ else
 	hours=$(( "$in" / (60*60) ))
 	minutes=$(( ("$in" / 60) - $hours * 60 ))
 	seconds=$(( "$in" % 60 ))
-	
+
+	pad hours 2
+	pad minutes 2
+	pad seconds 2
+
 	echo "$negChar$hours:$minutes:$seconds"
 
 fi
