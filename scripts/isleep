@@ -1,0 +1,15 @@
+#!/bin/bash
+
+#TODO: make sure the input is actually a number
+
+# clear_eol source: https://stackoverflow.com/a/4644497
+
+clear_eol=$(tput el)
+time="$1"
+while [[ $time > 0 ]] ; do
+	printf "Waiting... $(timestamp $time)"
+	sleep 1
+	printf "\r${clear_eol}"
+	time=$(( $time - 1 ))
+done
+
