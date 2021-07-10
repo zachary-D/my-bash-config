@@ -1,0 +1,58 @@
+#!/bin/bash
+
+#A utility for performing coarse and quick filter operations on files, indended for TypeORM migration files (i.e. excluding unwanted modifications to a table, or filtering to only certain tables)
+
+set -e
+
+files=()
+include=()
+exclude=()
+
+while [[ $# -gt 0 ]]; do
+	key="$1"
+	shift
+	case "$key" in
+		-i|--include)
+			include+=("$1")
+			shift
+			;;
+		-e|--exclude)
+			exclude+=("$1")
+			shift
+			;;
+		*)
+			files+=("$key")
+			;;
+	esac
+done
+
+function buildArgs() {
+	inp=($@)
+	args=()
+	for i in "${inp[@]}" ; do
+		args+=('-e')
+		args+=("$i")
+	done
+	#The leading space is important - it prevents echo from trying to parse the first -e as an option to itself
+	echo ' '"${args[@]}"
+}
+
+for file in "${files[@]}" ; do
+	workFile=".${file}__"
+	
+	if [[ "${#include[@]}" -gt 0 ]]; then
+		args="$(buildArgs "${include[@]}")"
+		echo 'dropped:'
+		grep $args "$file" -v
+		grep $args "$file" > "$workFile"
+		mv "$workFile" "$file"
+	fi
+
+	if [[ "${#exclude[@]}" -gt 0 ]]; then
+		args="$(buildArgs "${exclude[@]}")"
+		echo 'dropped:'
+		grep $args "$file"
+		grep $args "$file" -v > "$workFile"
+		mv "$workFile" "$file"
+	fi
+done
