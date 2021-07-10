@@ -38,7 +38,7 @@ function buildArgs() {
 }
 
 for file in "${files[@]}" ; do
-	workFile=".${file}__"
+	workFile="${file}__"
 	
 	if [[ "${#include[@]}" -gt 0 ]]; then
 		args="$(buildArgs "${include[@]}")"
