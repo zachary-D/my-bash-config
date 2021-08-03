@@ -1,0 +1,21 @@
+#!/bin/bash
+
+#Performs git fetch in the background, only printing a quiet error message if it fails
+
+args="$@"
+
+function doFetch() {
+	output=$(git fetch $args 2>&1)
+	if [[ $? != 0 ]]; then
+		if [[ "$args" != "" ]]; then
+			argSpc=' '
+		else
+			argSpc=''
+		fi
+		echo ''
+		echo "Error: qfetch failed executing command 'git fetch$argSpc$args'"
+		echo "$output"
+	fi
+}
+
+doFetch &
