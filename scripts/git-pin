@@ -1,0 +1,20 @@
+#!/bin/bash
+# Creates a 'pin' branch to act as a backup of the currently checked-out branch
+
+set -e
+
+branch=$(git rev-parse --abbrev-ref HEAD)
+
+pinBranch="pin/$branch"
+
+uniqCounter=0
+uniqString=''
+
+# The loop is 'while the ref can be parsed' because we want the first branch that can't be parsed - meaning it doesn't exist
+while git rev-parse --verify --quiet "$pinBranch$uniqString" > /dev/null; do
+	uniqCounter=$(( uniqCounter + 1))
+	uniqString="-$uniqCounter"
+done
+
+git branch "$pinBranch$uniqString"
+echo "$pinBranch$uniqString"
