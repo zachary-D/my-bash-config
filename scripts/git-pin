@@ -7,14 +7,37 @@ branch=$(git rev-parse --abbrev-ref HEAD)
 
 pinBranch="pin/$branch"
 
-uniqCounter=0
-uniqString=''
+case "$1" in
+--cleanup)
+	if ! targets=$(git branch | grep -E "^ *$pinBranch") ; then
+		echo "No branches found."
+		exit 0
+	fi
 
-# The loop is 'while the ref can be parsed' because we want the first branch that can't be parsed - meaning it doesn't exist
-while git rev-parse --verify --quiet "$pinBranch$uniqString" > /dev/null; do
-	uniqCounter=$(( uniqCounter + 1))
-	uniqString="-$uniqCounter"
-done
+	echo "Found $(echo "$targets" | wc -l) branch(es) to prune:"
 
-git branch "$pinBranch$uniqString"
-echo "$pinBranch$uniqString"
+	echo "$targets"
+	printf "Continue? (y/n)> "
+	read input
+	if [[ "$input" == 'y' ]]; then
+		git branch -D $(echo "$targets" | tr "\n" ' ')
+	elif [[ "$input" == 'n' ]]; then
+		echo 'Exiting.'
+	else
+		echo 'Invalid input.  Exiting.'
+	fi
+;;
+*) # no arg
+	uniqCounter=0
+	uniqString=''
+
+	# The loop is 'while the ref can be parsed' because we want the first branch that can't be parsed - meaning it doesn't exist
+	while git rev-parse --verify --quiet "$pinBranch$uniqString" > /dev/null; do
+		uniqCounter=$(( uniqCounter + 1))
+		uniqString="-$uniqCounter"
+	done
+
+	git branch "$pinBranch$uniqString"
+	echo "$pinBranch$uniqString"
+;;
+esac
