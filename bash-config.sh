@@ -17,17 +17,17 @@ alias gdiffc="gdiff --cached"
 # set REDIRECT_DB in the machine-specific bash config before this file is loaded to enable
 case "$REDIRECT_DB" in
 	WSL_HOST)
-		alias mariadb="mariadb -h $WSL_HOST"
-		alias mysqldump="mysqldump -h $WSL_HOST"
+		#alias mariadb="mariadb -h $WSL_HOST"
+		#alias mysqldump="mysqldump -h $WSL_HOST"
 	;;
 	LOCALHOST_IP)
-		alias mariadb="mariadb -h 127.0.0.1"
-		alias mysqldump="mysqldump -h 127.0.0.1"
+		#alias mariadb="mariadb -h 127.0.0.1"
+		#alias mysqldump="mysqldump -h 127.0.0.1"
 	;;
 esac
 
 # functional aliases
-alias mysql=mariadb
+#alias mysql=mariadb
 alias typescript="node -r ts-node/register"
 alias code=code-insiders
 
