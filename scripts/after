@@ -1,0 +1,62 @@
+#!/bin/bash
+
+# Waits until the current time is later than the given time, and then exits
+
+# $1 - target time (in 24h time)
+# Assumes inputs are HH:MM, unless seconds are also specified
+
+# Returns the number of colons in $1
+function colonCount {
+	echo "$1" | grep -o ':' | wc -l
+}
+
+target="$1"
+
+count=$(colonCount "$target")
+if [[ $count -eq 1 ]] ; then
+	target="$target:00"
+	count=2
+fi
+
+if [[ $count -ne 2 ]]; then
+	echo "Bad time: $1"
+	exit 1
+fi
+
+if [[ "$target" == '24:00:00' ]]; then
+	target='00:00:00'
+fi
+
+if ! date -d "$target" &> /dev/null ; then
+	echo "Invalid time: $1"
+	exit 1
+fi
+
+startDatestamp=$(date +%F)
+
+# returns the time since epoch for the current time
+function nowTimestamp {
+	date +%s
+}
+
+# returns the time since epoch for the target time
+function targetTimestamp {
+	date +%s -d "$target"
+}
+
+# printf 'waiting until '
+
+isTargetTomorrow=false
+if [[ $(targetTimestamp) -lt $(date +%s) ]] ; then
+	isTargetTomorrow=true
+	# printf 'tomorrow at '
+fi
+
+# echo "$target"
+
+# These dates are re-evaluated so that they'll update when the clock rolls over into the next day
+while true; do
+	if [[ $(nowTimestamp) -ge $(targetTimestamp) ]] && [[ $isTargetTomorrow == false || "$startDatestamp" != "$(date +%F)" ]] ; then
+		exit 0
+	fi
+done
