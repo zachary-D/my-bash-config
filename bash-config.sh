@@ -46,6 +46,9 @@ alias gay=lolcat
 # jump to my user directory on the windows-side
 alias win="cd /mnt/c/Users/zac*"
 
+# Creates and moves to a /tmp/ directory
+alias gotemp='cd $(mktemp -d)'
+
 # Startup banner
 function dispBanner() {
 	welcome="Welcome back Zack,"
